@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Relatório Funerário</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Formulário de Entrada -->
+    <div class="container form-container">
+        <h1>RELATÓRIO FUNERÁRIO</h1>
+        <form id="funeralForm" onsubmit="return false;">
+            <div class="section">
+                <h2>Dados do Falecido</h2>
+                <div class="form-group">
+                    <div class="form-field">
+                        <label class="required" for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="dataFalecimento">Data do Falecimento</label>
+                        <input type="date" id="dataFalecimento" name="dataFalecimento" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="horarioFalecimento">Horário do Falecimento</label>
+                        <input type="time" id="horarioFalecimento" name="horarioFalecimento" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="causaMorte">Causa da Morte</label>
+                        <input type="text" id="causaMorte" name="causaMorte" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="localFalecimento">Local do Falecimento</label>
+                        <input type="text" id="localFalecimento" name="localFalecimento" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="cpf">CPF</label>
+                        <input type="text" id="cpf" name="cpf" required maxlength="14" onkeyup="formatCPF(this)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Dados do Contratante</h2>
+                <div class="form-group">
+                    <div class="form-field">
+                        <label class="required" for="nomeContratante">Nome Completo</label>
+                        <input type="text" id="nomeContratante" name="nomeContratante" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="cpfContratante">CPF</label>
+                        <input type="text" id="cpfContratante" name="cpfContratante" required maxlength="14" onkeyup="formatCPF(this)">
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="telefoneContratante">Telefone</label>
+                        <input type="tel" id="telefoneContratante" name="telefoneContratante" required maxlength="15" onkeyup="formatTelefone(this)">
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="enderecoContratante">Endereço</label>
+                        <input type="text" id="enderecoContratante" name="enderecoContratante" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Dados do Serviço</h2>
+                <div class="form-group">
+                    <div class="form-field">
+                        <label class="required" for="tipoUrna">Tipo de Urna</label>
+                        <input type="text" id="tipoUrna" name="tipoUrna" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="localVelorio">Local do Velório</label>
+                        <input type="text" id="localVelorio" name="localVelorio" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="horarioVelorio">Horário do Velório</label>
+                        <input type="time" id="horarioVelorio" name="horarioVelorio" required>
+                    </div>
+                    <div class="form-field">
+                        <label class="required" for="localSepultamento">Local do Sepultamento</label>
+                        <input type="text" id="localSepultamento" name="localSepultamento" required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" onclick="validateAndGenerate()">Gerar Relatório</button>
+        </form>
+    </div>
+
+    <!-- Relatório para Impressão -->
+    <div class="container report" id="report">
+        <h1>RELATÓRIO FUNERÁRIO</h1>
+        <p style="text-align: right; margin-bottom: 20px;">Data: <span id="currentDate"></span></p>
+
+        <div class="section">
+            <h2>Dados do Falecido</h2>
+            <div class="info-grid">
+                <p><strong>Nome:</strong> <span id="report-nome" class="field-value"></span></p>
+                <p><strong>CPF:</strong> <span id="report-cpf" class="field-value"></span></p>
+                <p><strong>Data Falecimento:</strong> <span id="report-dataFalecimento" class="field-value"></span></p>
+                <p><strong>Horário:</strong> <span id="report-horarioFalecimento" class="field-value"></span></p>
+                <p><strong>Local:</strong> <span id="report-localFalecimento" class="field-value"></span></p>
+                <p><strong>Causa:</strong> <span id="report-causaMorte" class="field-value"></span></p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Dados do Contratante</h2>
+            <div class="info-grid">
+                <p><strong>Nome:</strong> <span id="report-nomeContratante" class="field-value"></span></p>
+                <p><strong>CPF:</strong> <span id="report-cpfContratante" class="field-value"></span></p>
+                <p><strong>Telefone:</strong> <span id="report-telefoneContratante" class="field-value"></span></p>
+                <p><strong>Endereço:</strong> <span id="report-enderecoContratante" class="field-value"></span></p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Dados do Serviço</h2>
+            <div class="info-grid">
+                <p><strong>Tipo de Urna:</strong> <span id="report-tipoUrna" class="field-value"></span></p>
+                <p><strong>Local do Velório:</strong> <span id="report-localVelorio" class="field-value"></span></p>
+                <p><strong>Horário:</strong> <span id="report-horarioVelorio" class="field-value"></span></p>
+                <p><strong>Local Sepultamento:</strong> <span id="report-localSepultamento" class="field-value"></span></p>
+            </div>
+        </div>
+
+        <div class="signatures">
+            <div class="signature-line">
+                <hr>
+                <p>Assinatura do Contratante</p>
+            </div>
+            <div class="signature-line">
+                <hr>
+                <p>Assinatura do Responsável</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="javascript.js"></script>
+</body>
+</html>
